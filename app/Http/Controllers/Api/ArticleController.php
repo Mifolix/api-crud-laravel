@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
+use App\Http\Resources\AtricleResource;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -12,7 +13,7 @@ class ArticleController extends Controller
 {
     public function index()
     {
-        return response()->json(Article::all(), Response::HTTP_OK);
+        return AtricleResource::collection(Article::all());
     }
 
     public function store(ArticleRequest $request)
@@ -23,10 +24,10 @@ class ArticleController extends Controller
 
     public function show(Article $article)
     {
-        return response()->json($article, Response::HTTP_OK);
+        return new AtricleResource($article);
     }
 
-    public function update(Request $request, Article $article)
+    public function update(ArticleRequest $request, Article $article)
     {
         $article->update($request->validated());
         return response()->json($article, Response::HTTP_OK);
